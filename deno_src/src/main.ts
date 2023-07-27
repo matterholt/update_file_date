@@ -1,25 +1,24 @@
-import { walk } from "https://deno.land/std@0.194.0/fs/walk.ts";
-import { dayOfYearUtc } from "https://deno.land/std@0.195.0/datetime/mod.ts";
+import { YYYYDOY, expiredDate, checkFileIsExpired } from "./helpers/index.ts";
+import config from "../config.json" assert { type: "json" };
 
 // year, day of year
 
 (async function main() {
   let filePath = "../sample/acorn.js";
+  const currentDate = new Date();
 
-  // const expirationDate = await expiredDate();
-  // const fileLastModified = await readMeta(filePath);
+  const expirationDate = await expiredDate(
+    currentDate,
+    config.days_till_expiration
+  );
+  const fileInfo = await Deno.stat(filePath);
+  const fileMetaModified = await YYYYDOY(new Date(fileInfo.mtime));
 
-  // console.log({ expirationDate, fileLastModified });
+  const hasFileExpired = checkFileIsExpired(expirationDate, fileMetaModified);
 
-  // if
-  // if (
-  //   fileLastModified.year > expirationDate.year &&
-  //   fileLastModified.dayOfYear < expirationDate.dayOfYear
-  // ) {
-  //   console.log(
-  //     "file has been modified before the new year so , previous year"
-  //   );
-  // }
+  if (hasFileExpired) {
+    console.log("File has expired and needs to be update");
+  }
 
   // TODO: write test,
   // TODO: when calculate take account year

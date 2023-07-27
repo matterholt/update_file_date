@@ -5,22 +5,32 @@ export const YYYYDOY = (date: Date) => {
   return { year: date.getFullYear(), dayOfYear: dayOfYearUtc(date) };
 };
 
-// const readMeta = async (file: string) => {
-//   const fileInfo = await Deno.stat(file);
-//   const modDate = new Date(fileInfo.mtime);
-//   return YYYYDOY(modDate);
-// };
+export const expiredDate = (currentDate: Date, dayOfExpiration: number) => {
+  const { year, dayOfYear } = YYYYDOY(currentDate);
+  const dayOfYearExpiration = dayOfYear - dayOfExpiration;
 
-// const expiredDate = () => {
-//   const dayOfExpiration = 30;
-//   const currentDate = new Date();
-//   const { year, dayOfYear } = YYYYDOY(currentDate);
+  if (dayOfYearExpiration < 0) {
+    return { year: year - 1, dayOfYear: 360 - dayOfYearExpiration };
+  }
 
-//   const dayOfYearExpiration = dayOfYear - dayOfExpiration;
+  return { year: year, dayOfYear: dayOfYearExpiration };
+};
 
-//   if (dayOfYearExpiration < 0) {
-//     return { year: year - 1, dayOfYear: 360 - dayOfYearExpiration };
-//   }
+interface DayOfYearWithYear {
+  year: number;
+  dayOfYear: number;
+}
 
-//   return { year: year, dayOfYear: dayOfYearExpiration };
-// };
+export const checkFileIsExpired = (
+  fileMetaModified: DayOfYearWithYear,
+  expirationDate: DayOfYearWithYear
+) => {
+  if (fileMetaModified.year > expirationDate.year) {
+    // modify year is lower than the expiration date
+    return false;
+  }
+  if (fileMetaModified.dayOfYear > expirationDate.dayOfYear) {
+    return false;
+  }
+  return true;
+};
