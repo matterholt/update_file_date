@@ -1,3 +1,4 @@
 {
-  "expiration": 30
+  "days_till_expiration": 30,
+  "directory_search_path": ""
 }

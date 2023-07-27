@@ -6,13 +6,18 @@ A friend had as program that will not detect a file if is later than 30 days or 
 
 ## Languages
 
+### Main 
+
 - Deno => in progress
 - Python => next
 - Node => later
 - Rust => if I'm lucky. 
+
+### Others
+
 - C/C++ => possibly
 - GO => as of now not likely
-- zig
+- Zig
 - Vlang
 
 
