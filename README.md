@@ -37,3 +37,8 @@ A friend had as program that will not detect a file if is later than 30 days or 
 1. Search a directory for files
     - have a config file with file to look for / ignore , if none are set then check all
 1. Make Script a Executable
+
+
+## Extra Features TODO 
+
+- find duplicate files in directory, with the amount of bites taken up
